@@ -78,7 +78,9 @@ node('mvn-build-pod') {
 
   // no user changes should be needed below this point
   stage ('Deploy to Dev') {
-    input "Promote Application to Dev?"
+    timeout(60){
+      input "Promote Application to Dev?"
+    }
 
     openshiftTag (apiURL: "${env.OCP_API_SERVER}", authToken: "${env.OCP_TOKEN}", destStream: "${env.APP_NAME}", destTag: 'latest', destinationAuthToken: "${env.OCP_TOKEN}", destinationNamespace: "${env.DEV_PROJECT}", namespace: "${env.OPENSHIFT_BUILD_NAMESPACE}", srcStream: "${env.APP_NAME}", srcTag: 'latest')
 
@@ -86,7 +88,9 @@ node('mvn-build-pod') {
   }
 
   stage ('Deploy to Test') {
-    input "Promote Application to Test?"
+    timeout(60){
+      input "Promote Application to Test?"
+    }
 
     openshiftTag (apiURL: "${env.OCP_API_SERVER}", authToken: "${env.OCP_TOKEN}", destStream: "${env.APP_NAME}", destTag: 'latest', destinationAuthToken: "${env.OCP_TOKEN}", destinationNamespace: "${env.TEST_PROJECT}", namespace: "${env.DEV_PROJECT}", srcStream: "${env.APP_NAME}", srcTag: 'latest')
 
@@ -94,7 +98,9 @@ node('mvn-build-pod') {
   }
 
   stage ('Deploy to UAT') {
-    input "Promote Application to UAT?"
+    timeout(60){
+      input "Promote Application to UAT?"
+    }
 
     openshiftTag (apiURL: "${env.OCP_API_SERVER}", authToken: "${env.OCP_TOKEN}", destStream: "${env.APP_NAME}", destTag: 'latest', destinationAuthToken: "${env.OCP_TOKEN}", destinationNamespace: "${env.UAT_PROJECT}", namespace: "${env.TEST_PROJECT}", srcStream: "${env.APP_NAME}", srcTag: 'latest')
 
